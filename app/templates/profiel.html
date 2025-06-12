@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profiel.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <img src="{{ url_for('static', filename='img/default-profile.png') }}" 
+                     class="rounded-circle mb-3" width="150" alt="Profiel foto">
+                <h3>{{ gebruiker.naam }}</h3>
+                <p class="text-muted">{{ gebruiker.email }}</p>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('profiel_bewerken') }}" class="btn btn-primary">
+                        Profiel bewerken
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Laatste Metingen</h4>
+            </div>
+            <div class="card-body">
+                {% if gezondheidsdata %}
+                <div class="row text-center">
+                    <div class="col-md-4 border-end">
+                        <h2 class="text-primary">{{ gezondheidsdata.stappen }}</h2>
+                        <p class="text-muted">Stappen</p>
+                    </div>
+                    <div class="col-md-4 border-end">
+                        <h2 class="text-primary">{{ gezondheidsdata.hartslag }}</h2>
+                        <p class="text-muted">Hartslag (bpm)</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="text-primary">{{ "%.1f"|format(gezondheidsdata.gewicht / ((gezondheidsdata.lengte/100)**2) }}</h2>
+                        <p class="text-muted">BMI</p>
+                    </div>
+                </div>
+                {% else %}
+                <p>Nog geen gezondheidsdata beschikbaar.</p>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <h5>Stappen Historie</h5>
+                    <div class="chart-container">
+                        {{ stappen_grafiek|safe if stappen_grafiek else "Geen data beschikbaar" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}

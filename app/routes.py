@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_file
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from authlib.integrations.flask_client import OAuth
-from models import db, User, HealthData, AuditLog, ContactMessage
-from utils import generate_pdf_report, export_to_csv
+from models import db, Gebruiker, GezondheidsData, AuditLog, ContactBericht
+from utils import genereer_pdf_rapport, exporteer_naar_csv
 from datetime import datetime
 import pandas as pd
 import plotly.express as px
@@ -11,83 +11,78 @@ import os
 from werkzeug.security import generate_password_hash
 import logging
 from functools import wraps
+from urllib.parse import urlencode
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dev-secret-key')
+app.secret_key = os.environ.get('FLASK_GEHEIME_SLEUTEL', 'dev-geheime-sleutel')
 
-# Auth0 Config
+# Auth0 Configuratie
 oauth = OAuth(app)
 auth0 = oauth.register(
     'auth0',
     client_id='Euz1mW8N2cpQT3VoMXFAEIAZ01fhBQN3',
     client_secret='auxqtovw7uMZPxFVu3BL_SRdmYJBH0Zdg0tyz4iwDWyHJmWcmle4u50NZquFfyto',
-    api_base_url=f"https://dev-qri4asc6ndkott2u.uk.auth0.com",
-    access_token_url=f"https://dev-qri4asc6ndkott2u.uk.auth0.com/oauth/token",
-    authorize_url=f"https://dev-qri4asc6ndkott2u.uk.auth0.com/authorize",
+    api_base_url="https://dev-qri4asc6ndkott2u.uk.auth0.com",
+    access_token_url="https://dev-qri4asc6ndkott2u.uk.auth0.com/oauth/token",
+    authorize_url="https://dev-qri4asc6ndkott2u.uk.auth0.com/authorize",
     client_kwargs={'scope': 'openid profile email'},
 )
 
 # Login Manager
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
-
+login_manager.login_view = 'inloggen'
 
 # Decorators
-def admin_required(f):
+def admin_vereist(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_admin:
-            flash('Admin access required', 'danger')
-            return redirect(url_for('profile'))
+            flash('Admin toegang vereist', 'gevaar')
+            return redirect(url_for('profiel'))
         return f(*args, **kwargs)
-
     return decorated_function
-
 
 # Routes
 @app.route('/')
 def home():
-    return render_template('home.html', dark_mode=session.get('dark_mode', False))
+    return render_template('home.html')
 
-
-@app.route('/login')
-def login():
+@app.route('/inloggen')
+def inloggen():
     return auth0.authorize_redirect(
         redirect_uri=url_for('callback', _external=True),
-        audience=f"https://dev-qri4asc6ndkott2u.uk.auth0.com/userinfo"
+        audience="https://dev-qri4asc6ndkott2u.uk.auth0.com/userinfo"
     )
-
 
 @app.route('/callback')
 def callback():
     try:
         token = auth0.authorize_access_token()
         resp = auth0.get('userinfo')
-        userinfo = resp.json()
+        gebruikersinfo = resp.json()
 
-        # Create or update user
-        user = User.query.filter_by(auth0_id=userinfo['sub']).first()
-        if not user:
-            user = User(
-                auth0_id=userinfo['sub'],
-                email=userinfo['email'],
-                name=userinfo.get('name', ''),
-                is_admin=userinfo['email'] in os.environ.get('ADMIN_WHITELIST', '').split(',')
+        # Maak of update gebruiker
+        gebruiker = Gebruiker.query.filter_by(auth0_id=gebruikersinfo['sub']).first()
+        if not gebruiker:
+            gebruiker = Gebruiker(
+                auth0_id=gebruikersinfo['sub'],
+                email=gebruikersinfo['email'],
+                naam=gebruikersinfo.get('name', ''),
+                is_admin=gebruikersinfo['email'] in os.environ.get('ADMIN_WHITELIST', '').split(',')
             )
-            db.session.add(user)
+            db.session.add(gebruiker)
             db.session.commit()
 
-        login_user(user)
-        return redirect(url_for('profile'))
+        login_user(gebruiker)
+        return redirect(url_for('profiel'))
     except Exception as e:
-        logging.error(f"Auth error: {str(e)}")
-        flash('Login failed', 'danger')
+        logging.error(f"Auth fout: {str(e)}")
+        flash('Inloggen mislukt', 'gevaar')
         return redirect(url_for('home'))
 
-
-@app.route('/logout')
+@app.route('/uitloggen')
 @login_required
-def logout():
+def uitloggen():
     logout_user()
     session.clear()
     params = {
@@ -96,180 +91,161 @@ def logout():
     }
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
-
-@app.route('/profile')
+@app.route('/profiel')
 @login_required
-def profile():
-    health_data = HealthData.query.filter_by(user_id=current_user.id).order_by(HealthData.date.desc()).first()
-    all_data = HealthData.query.filter_by(user_id=current_user.id).all()
+def profiel():
+    gezondheidsdata = GezondheidsData.query.filter_by(gebruiker_id=current_user.id).order_by(GezondheidsData.datum.desc()).first()
+    alle_data = GezondheidsData.query.filter_by(gebruiker_id=current_user.id).all()
 
-    # Generate Plotly graphs
-    if all_data:
+    # Genereer grafieken
+    if alle_data:
         df = pd.DataFrame([{
-            'date': d.date,
-            'steps': d.steps,
-            'heart_rate': d.heart_rate,
-            'sleep': d.sleep_hours
-        } for d in all_data])
+            'datum': d.datum,
+            'stappen': d.stappen,
+            'hartslag': d.hartslag,
+            'slaap': d.slaap_uren
+        } for d in alle_data])
 
-        steps_fig = px.line(df, x='date', y='steps', title='Step History')
-        steps_graph = steps_fig.to_html(full_html=False)
+        stappen_fig = px.line(df, x='datum', y='stappen', title='Stappen Geschiedenis')
+        stappen_grafiek = stappen_fig.to_html(full_html=False)
 
-        hr_fig = px.line(df, x='date', y='heart_rate', title='Heart Rate History')
-        hr_graph = hr_fig.to_html(full_html=False)
+        hartslag_fig = px.line(df, x='datum', y='hartslag', title='Hartslag Geschiedenis')
+        hartslag_grafiek = hartslag_fig.to_html(full_html=False)
     else:
-        steps_graph = hr_graph = None
+        stappen_grafiek = hartslag_grafiek = None
 
-    return render_template('profile.html',
-                           user=current_user,
-                           health_data=health_data,
-                           steps_graph=steps_graph,
-                           hr_graph=hr_graph,
-                           dark_mode=session.get('dark_mode', False)
-                           )
+    return render_template('profiel.html',
+                         gebruiker=current_user,
+                         gezondheidsdata=gezondheidsdata,
+                         stappen_grafiek=stappen_grafiek,
+                         hartslag_grafiek=hartslag_grafiek)
 
-
-@app.route('/profile/update', methods=['POST'])
+@app.route('/profiel/bewerken', methods=['POST'])
 @login_required
-def update_profile():
+def profiel_bewerken():
     try:
-        current_user.name = request.form.get('name', current_user.name)
+        current_user.naam = request.form.get('naam', current_user.naam)
 
-        # Update health data
-        health_data = HealthData(
-            user_id=current_user.id,
-            weight=float(request.form['weight']),
-            height=float(request.form['height']),
-            steps=int(request.form.get('steps', 0)),
-            heart_rate=int(request.form.get('heart_rate', 0)),
-            sleep_hours=float(request.form.get('sleep_hours', 0)),
-            date=datetime.utcnow()
+        # Update gezondheidsdata
+        gezondheidsdata = GezondheidsData(
+            gebruiker_id=current_user.id,
+            gewicht=float(request.form['gewicht']),
+            lengte=float(request.form['lengte']),
+            stappen=int(request.form.get('stappen', 0)),
+            hartslag=int(request.form.get('hartslag', 0)),
+            slaap_uren=float(request.form.get('slaap_uren', 0)),
+            datum=datetime.utcnow()
         )
-        db.session.add(health_data)
+        db.session.add(gezondheidsdata)
         db.session.commit()
-        flash('Profile updated successfully', 'success')
+        flash('Profiel succesvol bijgewerkt', 'succes')
     except Exception as e:
         db.session.rollback()
-        flash(f'Update failed: {str(e)}', 'danger')
+        flash(f'Update mislukt: {str(e)}', 'gevaar')
 
-    return redirect(url_for('profile'))
-
+    return redirect(url_for('profiel'))
 
 @app.route('/admin')
 @login_required
-@admin_required
+@admin_vereist
 def admin_dashboard():
-    users = User.query.all()
-    health_data = HealthData.query.order_by(HealthData.date.desc()).limit(100).all()
+    gebruikers = Gebruiker.query.all()
+    gezondheidsdata = GezondheidsData.query.order_by(GezondheidsData.datum.desc()).limit(100).all()
 
-    # Generate admin graphs
+    # Genereer admin grafieken
     df = pd.DataFrame([{
-        'user': d.user.name,
-        'date': d.date,
-        'bmi': d.weight / ((d.height / 100) ** 2)
-    } for d in health_data])
+        'gebruiker': d.gebruiker.naam,
+        'datum': d.datum,
+        'bmi': d.gewicht / ((d.lengte / 100) ** 2)
+    } for d in gezondheidsdata])
 
-    bmi_fig = px.box(df, x='user', y='bmi', title='BMI Distribution')
-    bmi_graph = bmi_fig.to_html(full_html=False)
+    bmi_fig = px.box(df, x='gebruiker', y='bmi', title='BMI Verdeling')
+    bmi_grafiek = bmi_fig.to_html(full_html=False)
 
     return render_template('admin.html',
-                           users=users,
-                           health_data=health_data,
-                           bmi_graph=bmi_graph,
-                           dark_mode=session.get('dark_mode', False)
-                           )
-
+                         gebruikers=gebruikers,
+                         gezondheidsdata=gezondheidsdata,
+                         bmi_grafiek=bmi_grafiek)
 
 @app.route('/admin/export/csv')
 @login_required
-@admin_required
-def export_csv():
-    data = HealthData.query.all()
-    csv_data = export_to_csv(data)
+@admin_vereist
+def exporteer_csv():
+    data = GezondheidsData.query.all()
+    csv_data = exporteer_naar_csv(data)
     return send_file(
         BytesIO(csv_data.encode()),
         mimetype='text/csv',
         as_attachment=True,
-        download_name='health_data_export.csv'
+        download_name='gezondheidsdata_export.csv'
     )
-
 
 @app.route('/admin/export/pdf')
 @login_required
-@admin_required
-def export_pdf():
-    data = HealthData.query.limit(50).all()
-    pdf = generate_pdf_report(data)
+@admin_vereist
+def exporteer_pdf():
+    data = GezondheidsData.query.limit(50).all()
+    pdf = genereer_pdf_rapport(data)
     return send_file(
         BytesIO(pdf),
         mimetype='application/pdf',
         as_attachment=True,
-        download_name='health_report.pdf'
+        download_name='gezondheidsrapport.pdf'
     )
-
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
         try:
-            message = ContactMessage(
-                name=request.form['name'],
+            bericht = ContactBericht(
+                naam=request.form['naam'],
                 email=request.form['email'],
-                message=request.form['message'],
-                created_at=datetime.utcnow()
+                bericht=request.form['bericht'],
+                aangemaakt_op=datetime.utcnow()
             )
-            db.session.add(message)
+            db.session.add(bericht)
             db.session.commit()
-            flash('Message sent successfully!', 'success')
+            flash('Bericht succesvol verzonden!', 'succes')
             return redirect(url_for('contact'))
         except Exception as e:
-            flash(f'Error: {str(e)}', 'danger')
+            flash(f'Fout: {str(e)}', 'gevaar')
 
-    return render_template('contact.html', dark_mode=session.get('dark_mode', False))
+    return render_template('contact.html')
 
-
-@app.route('/settings', methods=['GET', 'POST'])
+@app.route('/instellingen', methods=['GET', 'POST'])
 @login_required
-def settings():
+def instellingen():
     if request.method == 'POST':
-        # Dark mode toggle
-        if 'dark_mode' in request.form:
-            session['dark_mode'] = request.form['dark_mode'] == 'on'
-
-        # GDPR delete request
-        if 'delete_account' in request.form:
-            HealthData.query.filter_by(user_id=current_user.id).delete()
+        # GDPR verwijderverzoek
+        if 'account_verwijderen' in request.form:
+            GezondheidsData.query.filter_by(gebruiker_id=current_user.id).delete()
             db.session.commit()
-            flash('All your health data has been deleted', 'info')
+            flash('Alle je gezondheidsdata is verwijderd', 'info')
 
-        return redirect(url_for('settings'))
+        return redirect(url_for('instellingen'))
 
-    return render_template('settings.html', dark_mode=session.get('dark_mode', False))
+    return render_template('instellingen.html')
 
-
-@app.route('/about')
-def about():
-    return render_template('about.html', dark_mode=session.get('dark_mode', False))
-
+@app.route('/over-ons')
+def over_ons():
+    return render_template('over_ons.html')
 
 @app.errorhandler(404)
-def page_not_found(e):
+def pagina_niet_gevonden(e):
     return render_template('404.html'), 404
 
-
 # API Endpoints
-@app.route('/api/health-data', methods=['GET'])
+@app.route('/api/gezondheidsdata', methods=['GET'])
 @login_required
-def api_health_data():
-    data = HealthData.query.filter_by(user_id=current_user.id).all()
+def api_gezondheidsdata():
+    data = GezondheidsData.query.filter_by(gebruiker_id=current_user.id).all()
     return jsonify([{
-        'date': d.date.isoformat(),
-        'steps': d.steps,
-        'heart_rate': d.heart_rate,
-        'sleep_hours': d.sleep_hours,
-        'bmi': d.weight / ((d.height / 100) ** 2)
+        'datum': d.datum.isoformat(),
+        'stappen': d.stappen,
+        'hartslag': d.hartslag,
+        'slaap_uren': d.slaap_uren,
+        'bmi': d.gewicht / ((d.lengte / 100) ** 2)
     } for d in data])
-
 
 if __name__ == '__main__':
     app.run(debug=True)
