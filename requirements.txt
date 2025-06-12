@@ -1,12 +1,1 @@
-Flask
-Flask-SQLAlchemy
-Flask-Migrate
-python-dotenv
-Authlib
-psycopg2-binary
-pandas
-numpy
-matplotlib
-pytest
-fpdf2
-faker
+flask

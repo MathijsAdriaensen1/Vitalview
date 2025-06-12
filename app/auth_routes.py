@@ -7,7 +7,7 @@ from authlib.integrations.flask_client import OAuth
 from flask import current_app as app
 import os
 
-auth_bp = Blueprint("auth", __name__)
+auth_bp = Blueprint("auth", __name__, template_folder="../templates")
 oauth = OAuth()
 
 # Auth0 config
