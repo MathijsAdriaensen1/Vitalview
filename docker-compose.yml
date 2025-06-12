@@ -1,28 +1,27 @@
-version: '3.8'
+version: "3.9"
 
 services:
   web:
     build: .
     ports:
       - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://vitaluser:vitalpass@db/vitaldb
     volumes:
-      - .:/code
-    env_file:
-      - .env
+      - .:/app
     depends_on:
       - db
 
   db:
     image: postgres:14
     environment:
-      POSTGRES_USER: vitalview
+      POSTGRES_USER: vitaluser
       POSTGRES_PASSWORD: vitalpass
-      POSTGRES_DB: vitalview
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: vitaldb
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   pgadmin:
     image: dpage/pgadmin4

@@ -1,12 +1,30 @@
 from flask import Flask
-from app.utils.routes import routes
-from app.utils.auth_routes import auth_bp
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_cors import CORS
+from dotenv import load_dotenv
+import os
 
-app = Flask(__name__, template_folder="app/templates")
+load_dotenv()
 
-# Blueprints registreren
-app.register_blueprint(routes)
-app.register_blueprint(auth_bp)
+db = SQLAlchemy()
+migrate = Migrate()
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+def create_app():
+    app = Flask(__name__)
+
+    app.config.from_object('config.Config')
+    CORS(app)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from app.routes import bp as routes_bp
+    app.register_blueprint(routes_bp)
+
+    return app
+
+app = create_app()
+
+if __name__ == '__main__':
+    app.run(debug=True)
