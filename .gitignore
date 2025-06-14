@@ -1,74 +1,10 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Virtual environments
-venv/
-env/
-.venv/
-ENV/
-env.bak/
-venv.bak/
-
-# PyCharm project files
-.idea/
-
-# VSCode settings
-.vscode/
-
-# Environment variables
+.idea
+.venv
 .env
+.ENV
 
-# Python egg metadata
-*.egg-info/
-*.egg
-dist/
-build/
+__pycache__/
+*.pyc
 
-# Database / migration artifacts
-*.sqlite3
-*.db
-*.sql
-*.log
-alembic.ini
-migrations/
 
-# Flask cache files
-instance/
-*.pid
-
-# Docker
-*.pid
-*.seed
-*.bak
-*.swp
-docker-compose.override.yml
-*.orig
-__docker_build__/
-.docker/
-
-# Coverage reports
-.coverage
-htmlcov/
-.tox/
-.nox/
-.pytest_cache/
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Compiled files
-*.so
-
-# PDFs and output
-*.pdf
-*.csv
-*.xlsx
+docker-compose.yml
