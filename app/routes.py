@@ -435,7 +435,14 @@ def recommendations():
         slaapgem = round(sum(d.sleep_hours for d in data if d.sleep_hours) / len(data), 1)
         stappen = round(sum(d.steps for d in data if d.steps) / len(data), 1)
         hartslag = round(sum(d.heart_rate for d in data if d.heart_rate) / len(data), 1)
-        stress = round(sum(d.stress_level for d in data if d.stress_level) / len(data), 1)
+        # Stresslevels kunnen zowel numeriek als tekstueel opgeslagen zijn.
+        # Enkel numerieke waarden worden gemiddeld om fouten te voorkomen.
+        stress_values = [
+            int(d.stress_level)
+            for d in data
+            if d.stress_level is not None and str(d.stress_level).isdigit()
+        ]
+        stress = round(sum(stress_values) / len(stress_values), 1) if stress_values else 0
 
         if slaapgem < 6:
             recommendations.append("Je slaapt gemiddeld minder dan 6 uur. Probeer vroeger te gaan slapen.")
