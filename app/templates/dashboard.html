@@ -4,6 +4,9 @@
 {% block title %}Dashboard - VitalView{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<div class="page-container">
 <h1>Welkom terug, {{ user.voornaam or 'gebruiker' }}!</h1>
 
 <form method="post" class="user-info-form">
@@ -20,10 +23,10 @@
 
 <form method="post" class="health-form">
   <h2>📊 Gezondheidsgegevens</h2>
-  <label>Slaapuren (laatste): <input type="number" name="sleep_hours" step="0.1" value="{{ laatste_data.sleep_hours or '' }}"></label><br>
-  <label>Stappen: <input type="number" name="steps" value="{{ laatste_data.steps or '' }}"></label><br>
-  <label>Hartslag: <input type="number" name="heart_rate" value="{{ laatste_data.heart_rate or '' }}"></label><br>
-  <label>Stressniveau: <input type="text" name="stress_level" value="{{ laatste_data.stress_level or '' }}"></label><br>
+  <label>Slaapuren (laatste): <input type="number" name="sleep_hours" step="0.1" value="{{ laatste_data.sleep_hours or '' }}" required></label><br>
+  <label>Stappen: <input type="number" name="steps" value="{{ laatste_data.steps or '' }}" required></label><br>
+  <label>Hartslag: <input type="number" name="heart_rate" value="{{ laatste_data.heart_rate or '' }}" required></label><br>
+  <label>Stressniveau: <input type="text" name="stress_level" value="{{ laatste_data.stress_level or '' }}" required></label><br>
   <button type="submit" name="update_health">Opslaan gezondheid</button>
 </form>
 
@@ -43,5 +46,9 @@
         <h3>Hartslag</h3>
         <p>Gemiddeld: {{ hartslag_avg }} bpm</p>
     </div>
+</div>
+
+<a href="{{ url_for('routes.export_csv') }}" class="btn-download">Download CSV</a>
+
 </div>
 {% endblock %}

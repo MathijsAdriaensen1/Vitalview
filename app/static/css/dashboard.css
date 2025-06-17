@@ -44,3 +44,41 @@ button:hover {
     background-color: #d1e7dd;
     color: #0f5132;
 }
+
+/* Layout improvements */
+.page-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.card-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.dashboard-card {
+    flex: 1;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.btn-download {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 1rem;
+}
+
+.btn-download:hover {
+    background-color: #218838;
+}

@@ -238,10 +238,16 @@ def dashboard():
                 laatste_data = HealthData(user_id=user.id, date=datetime.utcnow().date())
                 db.session.add(laatste_data)
 
-            laatste_data.sleep_hours = float(request.form["sleep_hours"])
-            laatste_data.steps = int(request.form["steps"])
-            laatste_data.heart_rate = int(request.form["heart_rate"])
-            laatste_data.stress_level = request.form["stress_level"]
+            sleep_val = request.form.get("sleep_hours")
+            steps_val = request.form.get("steps")
+            heart_val = request.form.get("heart_rate")
+            stress_val = request.form.get("stress_level")
+
+            laatste_data.sleep_hours = float(sleep_val) if sleep_val else None
+            laatste_data.steps = int(steps_val) if steps_val else None
+            laatste_data.heart_rate = int(heart_val) if heart_val else None
+            laatste_data.stress_level = stress_val or None
+
             db.session.commit()
             flash("Gezondheidsgegevens opgeslagen.")
             return redirect(url_for("routes.dashboard"))
