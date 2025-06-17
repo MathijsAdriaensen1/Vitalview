@@ -29,6 +29,7 @@
         <p>⚠️ Geen data beschikbaar voor de geselecteerde periode.</p>
     {% endif %}
 
-    <a href="{{ url_for('routes.export_csv') }}" class="btn-upload">⬆ Upload nieuwe data</a>
+    <a href="{{ url_for('routes.upload_data') }}" class="btn-green">⬆️ Upload nieuwe data</a>
+    <a href="{{ url_for('routes.export_csv') }}" class="btn-green">⬇️ Download als CSV</a>
 </div>
 {% endblock %}

@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title>{% block title %}VitalView Dashboard{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_dashboard.css') }}">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="dashboard-layout">
         <aside class="sidebar close" id="sidebar">
             <div class="sidebar-header">
-                <img src="{{ url_for('static', filename='images/vitalview-logo.png') }}" alt="VitalView logo" class="logo">
+               <img src="{{ url_for('static', filename='img/logo.png') }}" alt="VitalView logo" class="logo">
                 <h2>VitalView</h2>
                 <i class='bx bx-chevron-right toggle' id="toggleSidebar"></i>
             </div>
@@ -48,6 +48,12 @@
 
     <div id="theme-icon-animation" class="theme-animation-icon">🌙</div>
 
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_dashboard.js') }}"></script>
+<script>
+  setTimeout(() => {
+    const flash = document.querySelector('.flash');
+    if (flash) flash.style.display = 'none';
+  }, 3000); // Verberg na 3 seconden
+</script>
 </body>
 </html>
