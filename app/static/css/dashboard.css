@@ -1,0 +1,71 @@
+/* === Algemene layout uitbreidingen === */
+.user-info-form, .health-form {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.user-info-form h2,
+.health-form h2 {
+    color: #5a54f7;
+    margin-bottom: 1rem;
+}
+
+.user-info-form label,
+.health-form label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.user-info-form input,
+.health-form input,
+.health-form select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.user-info-form button,
+.health-form button {
+    background-color: #28A745;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-info-form button:hover,
+.health-form button:hover {
+    background-color: #218838;
+}
+
+/* Kaarten voor gemiddelden blijven zoals eerder */
+.card-container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.dashboard-card {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 220px;
+    text-align: center;
+}
+
+.dashboard-card h3 {
+    margin-bottom: 0.5rem;
+    color: #5a54f7;
+}

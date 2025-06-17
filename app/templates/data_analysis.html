@@ -1,0 +1,34 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Data-analyse - VitalView{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/data_analysis.css') }}">
+
+<div class="analysis-container">
+    <h2>📊 Gegevensanalyse</h2>
+    <p>Bekijk trends in je gezondheid op basis van je ingevoerde of geüploade data.</p>
+
+    <<form method="GET" action="{{ url_for('routes.data_analysis') }}">
+        <label for="filter">Periode:</label>
+        <select name="filter" id="filter" onchange="this.form.submit()">
+            {% set value = '7' %}
+            <option value="{{ value }}" {% if selected == value %}selected{% endif %}>Laatste 7 dagen</option>
+
+            {% set value = '30' %}
+            <option value="{{ value }}" {% if selected == value %}selected{% endif %}>Laatste 30 dagen</option>
+
+            {% set value = 'all' %}
+            <option value="{{ value }}" {% if selected == value %}selected{% endif %}>Alle data</option>
+        </select>
+    </form>
+
+    {% if image_url %}
+        <div class="chart">
+            <img src="{{ url_for('static', filename=image_url) }}" alt="Gezondheidsanalyse grafiek">
+        </div>
+    {% else %}
+        <p>⚠️ Geen data beschikbaar voor de geselecteerde periode.</p>
+    {% endif %}
+
+    <a href="{{ url_for('routes.export_csv') }}" class="btn-upload">⬆ Upload nieuwe data</a>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+.analysis-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.analysis-container h2 {
+    color: #4B0082;
+    margin-bottom: 10px;
+}
+
+.chart {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.chart img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+.btn-download {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+select {
+    margin-top: 10px;
+    padding: 6px;
+    font-size: 1rem;
+    border-radius: 6px;
+}

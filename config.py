@@ -1,13 +1,14 @@
 import os
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "vitalview-secret-key")
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///vitalview.db")
+    SECRET_KEY = os.getenv("SECRET_KEY", "default-secret")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Auth0
-    AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID")
-    AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
-    AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
-    AUTH0_CALLBACK_URL = os.environ.get("AUTH0_CALLBACK_URL")
-    AUTH0_AUDIENCE = os.environ.get("AUTH0_AUDIENCE")
+    # Flask-Mail
+    MAIL_SERVER = os.getenv("MAIL_SERVER", "smtp.gmail.com")
+    MAIL_PORT = int(os.getenv("MAIL_PORT", 587))
+    MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "True") == "True"
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")

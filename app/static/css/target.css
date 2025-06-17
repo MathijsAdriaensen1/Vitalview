@@ -1,0 +1,80 @@
+body {
+    background-color: white;
+}
+
+.target-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1f1f1f;
+}
+
+.target-container h1 {
+    font-size: 2.8rem;
+    color: #5a54f7;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+}
+
+.target-container .intro {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.audience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.audience-card {
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.audience-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #2b2d42;
+}
+
+.audience-card p {
+    font-size: 1rem;
+    color: #444;
+}
+
+.benefits-section {
+    margin-top: 4rem;
+    background-color: #f3f4f6;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.benefits-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    color: #2b2d42;
+}
+
+.benefits-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+}
+
+.benefits-list li {
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.call-to-action {
+    font-weight: 600;
+    color: #007BFF;
+    font-size: 1.1rem;
+}

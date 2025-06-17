@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Wat kan je doen? - VitalView{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/how.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="features-container">
+    <h1>Wat kan je doen met VitalView?</h1>
+    <p class="intro">
+        Nadat je je geregistreerd of aangemeld hebt, krijg je toegang tot een persoonlijk dashboard met inzichten in jouw gezondheid.
+        VitalView helpt je om trends te ontdekken, doelen te stellen en je welzijn actief op te volgen.
+    </p>
+
+    <div class="features-grid">
+        <div class="feature-item">
+            <h2>Bekijk je gezondheidsdata</h2>
+            <ul>
+                <li>Slaapduur en -kwaliteit</li>
+                <li>Hartslag & stressniveau</li>
+                <li>Dagelijkse stappen & beweging</li>
+                <li>Energieverloop doorheen de dag</li>
+            </ul>
+        </div>
+        <div class="feature-item">
+            <h2>Voer extra gegevens in</h2>
+            <ul>
+                <li>Zelfgerapporteerde stemming & energie</li>
+                <li>Dieetinformatie en waterinname</li>
+                <li>Medische gegevens of symptomen</li>
+            </ul>
+        </div>
+        <div class="feature-item">
+            <h2>Download of analyse data</h2>
+            <ul>
+                <li>Download CSV-overzichten</li>
+                <li>Bekijk grafieken en trends</li>
+                <li>Ontvang automatische aanbevelingen</li>
+                <li>Gebruik AI-analyses voor inzicht</li>
+            </ul>
+        </div>
+    </div>
+
+    <p class="closing">
+        Met VitalView houd jij de touwtjes in handen. Alles draait rond inzicht, bewustwording en verbetering van jouw gezondheid op jouw tempo.
+    </p>
+</div>
+{% endblock %}

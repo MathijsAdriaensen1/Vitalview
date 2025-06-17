@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Over VitalView{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <h1>Over VitalView</h1>
+
+    <section class="about-section">
+        <h2>Wie zijn wij?</h2>
+        <p>
+            VitalView is een digitaal gezondheidsplatform dat mensen helpt om inzicht te krijgen in hun fysieke en mentale welzijn aan de hand van data.
+            We geloven dat iedereen de kracht van zijn gezondheid in eigen handen moet kunnen nemen — en dat begint bij bewustzijn.
+        </p>
+    </section>
+
+    <section class="about-section">
+        <h2>Waarom VitalView?</h2>
+        <p>
+            VitalView ontstond uit een eenvoudige vraag: “Waarom wachten tot gezondheidsproblemen zich opstapelen, als we vroegtijdig signalen kunnen herkennen?”
+            Door data uit smartwatches, apps en wearables slim te analyseren, geven wij jou bruikbare inzichten over je lichaam.
+        </p>
+    </section>
+
+    <section class="about-section">
+        <h2>Onze missie</h2>
+        <p>
+            Onze missie is om gezondheidsdata toegankelijk, begrijpbaar en actiegericht te maken.
+            We willen niet enkel grafieken tonen; maar echte aanbevelingen geven die jouw levenskwaliteit verbeteren.
+        </p>
+    </section>
+
+    <section class="vision-section">
+        <div class="vision-text">
+            <h2>Onze visie</h2>
+            <p>
+                Wij geloven in een wereld waar technologie mensen versterkt, niet vervangt.
+                VitalView is er om jou te begeleiden — van bewustwording tot gedragsverandering —
+                op weg naar een gezonder leven.
+            </p>
+        </div>
+        <div class="vision-image">
+            <img src="{{ url_for('static', filename='img/about-woman.png') }}" alt="VitalView illustratie">
+        </div>
+    </section>
+</div>
+{% endblock %}

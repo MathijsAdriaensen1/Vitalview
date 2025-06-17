@@ -1,13 +1,17 @@
 FROM python:3.11-slim
 
+# Zet werkdirectory
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
+# Kopieer requirements en installeer
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Kopieer de volledige app (optioneel tijdens dev — meestal via volume)
 COPY . .
 
+# Zorg dat flask beschikbaar is
 ENV FLASK_APP=app.py
-ENV FLASK_ENV=development
+# of jouw startbestand
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]

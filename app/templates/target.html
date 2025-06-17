@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Voor wie? - VitalView{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/target.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="target-container">
+    <h1>Voor wie is VitalView?</h1>
+    <p class="intro">
+        VitalView is er voor iedereen die actief wil werken aan een gezonder leven. Of je nu sporter bent of gewoon inzicht wil in je gezondheid, VitalView ondersteunt jou met slimme inzichten.
+    </p>
+
+    <div class="audience-grid">
+        <div class="audience-card">
+            <h2>Gezondheidsbewuste volwassenen</h2>
+            <p>Voor wie hun fysieke en mentale welzijn beter wil begrijpen en opvolgen met data.</p>
+        </div>
+        <div class="audience-card">
+            <h2>Chronisch zieken</h2>
+            <p>Voor wie leeft met aandoeningen zoals diabetes, hartproblemen of burn-out en behoefte heeft aan continue opvolging.</p>
+        </div>
+        <div class="audience-card">
+            <h2>Sporters</h2>
+            <p>Voor wie prestaties wil optimaliseren via inzichten in slaap, hartslag en herstelvermogen.</p>
+        </div>
+        <div class="audience-card">
+            <h2>Ouderen</h2>
+            <p>Voor wie hun gezondheid zelfstandig wil blijven opvolgen, ondersteund door technologie en eenvoud.</p>
+        </div>
+        <div class="audience-card">
+            <h2>Mensen met stress of vermoeidheid</h2>
+            <p>Voor wie balans zoekt in energie, werk en rust – met realtime inzichten en persoonlijke tips.</p>
+        </div>
+    </div>
+
+    <div class="benefits-section">
+        <h2>Waarom kiezen voor VitalView?</h2>
+        <ul>
+            <li><strong>Realtime inzichten</strong> in je gezondheid op één plek</li>
+            <li><strong>Gebruiksvriendelijke interface</strong> – ook zonder technische kennis</li>
+            <li><strong>Wetenschappelijk onderbouwde analyses</strong> dankzij slimme algoritmes</li>
+            <li><strong>Persoonlijke aanbevelingen</strong> op basis van jouw data</li>
+            <li><strong>Veilig & privé</strong> – jij behoudt altijd controle over jouw gegevens</li>
+        </ul>
+        <p class="call-to-action">
+            <strong>Kies voor VitalView</strong> en neem vandaag nog de controle over je gezondheid in eigen handen.
+        </p>
+    </div>
+</div>
+{% endblock %}

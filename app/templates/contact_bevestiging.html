@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Bedankt! - VitalView{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+<style>
+  .confirmation-container {
+    max-width: 800px;
+    margin: 60px auto;
+    background-color: white;
+    padding: 50px 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  .confirmation-container h1 {
+    color: #6a0dad;
+    font-size: 1.9em;
+    margin-bottom: 25px;
+  }
+
+  .confirmation-container p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+  }
+
+  .btn-back {
+    display: inline-block;
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1em;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-back:hover {
+    background-color: #0056b3;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirmation-container">
+  <h1>Bedankt voor je bericht!</h1>
+  <p>We hebben uw bericht goed ontvangen. We nemen zo snel mogelijk contact met u op.</p>
+  <a href="{{ url_for('routes.home') }}" class="btn-back">Terug naar startpagina</a>
+</div>
+{% endblock %}
+
+
+
+We hebben uw bericht goed ontvangen.

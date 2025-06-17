@@ -5,23 +5,25 @@ services:
     build: .
     ports:
       - "5000:5000"
-    environment:
-      - FLASK_APP=app.py
-      - FLASK_ENV=development
-      - DATABASE_URL=postgresql://vitaluser:vitalpass@db/vitaldb
-    volumes:
-      - .:/app
     depends_on:
       - db
+    environment:
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
+    restart: always
 
   db:
-    image: postgres:14
+    image: postgres:15
     environment:
-      POSTGRES_USER: vitaluser
-      POSTGRES_PASSWORD: vitalpass
-      POSTGRES_DB: vitaldb
+      POSTGRES_USER: vitaladmin
+      POSTGRES_PASSWORD: SecurePass456
+      POSTGRES_DB: vitalview_db
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - vitalview1_pgdata:/var/lib/postgresql/data
+    restart: always
 
   pgadmin:
     image: dpage/pgadmin4
@@ -32,6 +34,16 @@ services:
       - "5050:80"
     depends_on:
       - db
+    restart: always
+
+  backup:
+    build: ./backup
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      - db
+    restart: always
 
 volumes:
-  postgres_data:
+  vitalview1_pgdata:
+

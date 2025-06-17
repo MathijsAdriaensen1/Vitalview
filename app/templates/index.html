@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{%block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}VitalView{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<div class="hero">
+    <div class="hero-text">
+        <h1>Welkom bij <span class="highlight">VitalView</span></h1>
+        <p class="subtitle">Jouw gezondheid. Jouw data.<br>Jouw toekomst.</p>
+        <p class="description">
+            VitalView is jouw digitale partner voor een gezondere levensstijl. Monitor je hartslag,
+            stappen, slaap en stressniveaus – allemaal op één plek. Helder, veilig, en helemaal van jou!
+        </p>
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='img/dashboard.png') }}" alt="Dashboard afbeelding">
+    </div>
+</div>
+
+
+<!-- Testimonials -->
+<section class="testimonials">
+    <h2>Wat onze gebruikers zeggen</h2>
+    <div class="testimonial-cards">
+        <div class="card">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>“Eindelijk een app die me écht helpt mijn gezondheid onder controle te krijgen.”</p>
+            <p class="author">&mdash; Laura D., Antwerpen</p>
+        </div>
+        <div class="card">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>“Gebruiksvriendelijk en enorm motiverend. VitalView is een gamechanger!”</p>
+            <p class="author">&mdash; Mehdi A., Gent</p>
+        </div>
+        <div class="card">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>“Mijn stressniveaus zijn zichtbaar gedaald sinds ik VitalView gebruik.”</p>
+            <p class="author">&mdash; Sophie V., Leuven</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="main-footer">
+    <div class="footer-left">
+        <p><strong>VitalView</strong></p>
+        <p>📧 VitalView</p>
+        <p>📍 123 Stratenweg, 1234 AB, Amsterdam</p>
+        <p>📞 06-12345678</p>
+    </div>
+    <div class="footer-right">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+</footer>
+
+{% endblock %}

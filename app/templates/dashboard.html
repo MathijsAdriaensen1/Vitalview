@@ -1,0 +1,47 @@
+<!-- templates/dashboard.html -->
+{% extends "base_dashboard.html" %}
+
+{% block title %}Dashboard - VitalView{% endblock %}
+
+{% block content %}
+<h1>Welkom terug, {{ user.voornaam or 'gebruiker' }}!</h1>
+
+<form method="post" class="user-info-form">
+  <h2>📋 Persoonlijke gegevens</h2>
+  <label>Voornaam: <input type="text" name="voornaam" value="{{ user.voornaam }}" required></label><br>
+  <label>Achternaam: <input type="text" name="achternaam" value="{{ user.achternaam }}" required></label><br>
+  <label>E-mail: <input type="email" name="email" value="{{ user.email }}" required></label><br>
+  <label>Telefoonnummer: <input type="text" name="telefoonnummer" value="{{ user.telefoonnummer }}"></label><br>
+  <p><strong>Lid sinds:</strong> {{ user.date_joined.strftime('%d-%m-%Y') }}</p>
+  <button type="submit" name="update_user">Wijzig account</button>
+</form>
+
+<hr>
+
+<form method="post" class="health-form">
+  <h2>📊 Gezondheidsgegevens</h2>
+  <label>Slaapuren (laatste): <input type="number" name="sleep_hours" step="0.1" value="{{ laatste_data.sleep_hours or '' }}"></label><br>
+  <label>Stappen: <input type="number" name="steps" value="{{ laatste_data.steps or '' }}"></label><br>
+  <label>Hartslag: <input type="number" name="heart_rate" value="{{ laatste_data.heart_rate or '' }}"></label><br>
+  <label>Stressniveau: <input type="text" name="stress_level" value="{{ laatste_data.stress_level or '' }}"></label><br>
+  <button type="submit" name="update_health">Opslaan gezondheid</button>
+</form>
+
+<hr>
+
+<h2>Gemiddelde waarden</h2>
+<div class="card-container">
+    <div class="dashboard-card">
+        <h3>Slaap (uur)</h3>
+        <p>Gemiddeld: {{ slaap_avg }} u</p>
+    </div>
+    <div class="dashboard-card">
+        <h3>Stappen</h3>
+        <p>Gemiddeld: {{ stappen_avg }} per dag</p>
+    </div>
+    <div class="dashboard-card">
+        <h3>Hartslag</h3>
+        <p>Gemiddeld: {{ hartslag_avg }} bpm</p>
+    </div>
+</div>
+{% endblock %}

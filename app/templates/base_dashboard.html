@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}VitalView Dashboard{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar close" id="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='images/vitalview-logo.png') }}" alt="VitalView logo" class="logo">
+                <h2>VitalView</h2>
+                <i class='bx bx-chevron-right toggle' id="toggleSidebar"></i>
+            </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('routes.dashboard') }}"><i class='bx bx-home'></i><span>Dashboard</span></a></li>
+                    <li><a href="{{ url_for('routes.my_data') }}"><i class='bx bx-data'></i><span>Mijn data</span></a></li>
+                    <li><a href="{{ url_for('routes.data_analysis') }}"><i class='bx bx-bar-chart-alt'></i><span>Analyse</span></a></li>
+                    <li><a href="{{ url_for('routes.upload_data') }}"><i class='bx bx-upload'></i><span>Data uploaden</span></a></li>
+                    <li><a href="{{ url_for('routes.recommendations') }}"><i class='bx bx-bulb'></i><span>Aanbevelingen</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <button id="darkModeToggle" class="btn-toggle-theme">🌙</button>
+                <a href="{{ url_for('routes.logout') }}" class="btn-green"><i class='bx bx-log-out'></i><span>Uitloggen</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="flash-messages">
+                  {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <div id="theme-icon-animation" class="theme-animation-icon">🌙</div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

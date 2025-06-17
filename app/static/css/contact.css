@@ -1,0 +1,67 @@
+.section {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.contact-container {
+    background-color: #FFFFFF;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+}
+
+.contact-container h1 {
+    text-align: center;
+    color: #4B0082;
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    margin-top: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+form textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.btn-submit {
+    margin-top: 25px;
+    background-color: #00B5AD;
+    color: white;
+    padding: 14px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #007BFF;
+}
+
+.flash-messages {
+    background-color: #f8d7da;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    color: #721c24;
+    margin-bottom: 20px;
+}

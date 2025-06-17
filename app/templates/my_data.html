@@ -1,0 +1,50 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Mijn Data - VitalView{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/my_data.css') }}">
+
+<div class="page-container">
+    <h1>📊 Mijn Gezondheidsdata</h1>
+
+    <!-- Sectie 1 – Handmatige invoer -->
+    <div class="form-section">
+        <h2>➕ Handmatig gegevens toevoegen</h2>
+        <form method="post">
+            <input type="hidden" name="manual_entry" value="1">
+            <label>Slaapduur (uren): <input type="number" step="0.1" name="sleep_hours" required></label>
+            <label>Stappen: <input type="number" name="steps" required></label>
+            <label>Hartslag: <input type="number" name="heart_rate" required></label>
+            <label>Stressniveau:
+                <select name="stress_level" required>
+                    <option value="Laag">Laag</option>
+                    <option value="Gemiddeld">Gemiddeld</option>
+                    <option value="Hoog">Hoog</option>
+                </select>
+            </label>
+            <button type="submit">Opslaan</button>
+        </form>
+    </div>
+
+    <!-- Sectie 2 – Bestand uploaden -->
+    <div class="form-section">
+        <h2>📁 Upload data (.csv, .json)</h2>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file_upload" accept=".csv,.json" required>
+            <button type="submit">Upload bestand</button>
+        </form>
+    </div>
+
+    {% if laatste_data %}
+    <div class="form-section">
+        <h2>📅 Laatste ingevoerde gegevens</h2>
+        <ul>
+            <li><strong>Datum:</strong> {{ laatste_data.date }}</li>
+            <li><strong>Slaapuren:</strong> {{ laatste_data.sleep_hours }}</li>
+            <li><strong>Stappen:</strong> {{ laatste_data.steps }}</li>
+            <li><strong>Hartslag:</strong> {{ laatste_data.heart_rate }}</li>
+            <li><strong>Stressniveau:</strong> {{ laatste_data.stress_level }}</li>
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

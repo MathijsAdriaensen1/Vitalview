@@ -1,0 +1,10 @@
+.recommendation-list {
+    list-style-type: disc;
+    margin-left: 2rem;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.recommendation-list li {
+    margin-bottom: 0.75rem;
+}

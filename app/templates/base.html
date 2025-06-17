@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>{% block title %}VitalView{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    {% block head %}{% endblock %}
 </head>
 <body>
-$END$
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo links -->
+            <div class="logo-section">
+                <a href="{{ url_for('routes.home') }}">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="VitalView Logo" class="logo-img">
+                </a>
+            </div>
+
+            <!-- Centraal menu -->
+            <ul class="nav-links">
+                <li><a href="{{ url_for('routes.about') }}">Over ons</a></li>
+                <li><a href="{{ url_for('routes.target') }}">Voor wie?</a></li>
+                <li><a href="{{ url_for('routes.how') }}">Hoe werkt het?</a></li>
+                <li><a href="{{ url_for('routes.contact') }}">Contact</a></li>
+            </ul>
+
+            <!-- Rechts inloggen / registreren -->
+            <div class="nav-right">
+                    <a href="{{ url_for('routes.login') }}" class="btn-auth">Inloggen</a>
+                    <a href="{{ url_for('routes.register') }}" class="btn-auth">Registreren</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
 </body>
 </html>

@@ -1,11 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Inloggen - VitalView{% endblock %}
+{% block title %}Registreren - VitalView{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
 <div class="login-page">
     <div class="login-container">
-        <h2>Log je hier in</h2>
+        <h2>Maak een account aan</h2>
+        <p>Registreer met e-mail of gebruik sociale media.</p>
 
         {% with messages = get_flashed_messages() %}
           {% if messages %}
@@ -17,19 +19,21 @@
           {% endif %}
         {% endwith %}
 
-        <p class="form-toggle">Nog geen account
-            <a href="{{ url_for('routes.register') }}">Registreer</a>
-        </p>
 
-        <form id="login-form" action="{{ url_for('routes.login_email') }}" method="post" class="form-auth">
+
+        <form action="{{ url_for('routes.register') }}" method="post" class="form-auth">
             <input type="email" name="email" placeholder="E-mail" required
                    pattern="^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$"
                    title="Voer een geldig e-mailadres in.">
             <input type="password" name="password" placeholder="Wachtwoord" required
                    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$"
-                   title="Minstens 8 tekens, met hoofdletter, cijfer, speciaal teken.">
-            <button type="submit" class="btn-auth">Inloggen</button>
+                   title="Minstens 8 tekens, inclusief hoofdletter, cijfer en speciaal teken (!@#$%^&*).">
+            <button type="submit" class="btn-auth">Registreren</button>
         </form>
+
+        <div class="divider">
+            <p>Al een account? <a href="{{ url_for('routes.login') }}">Log hier in</a></p>
+        </div>
     </div>
 </div>
 {% endblock %}

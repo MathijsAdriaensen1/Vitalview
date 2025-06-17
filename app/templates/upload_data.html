@@ -1,0 +1,26 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Gegevens uploaden - VitalView{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/upload_data.css') }}">
+
+<div class="upload-container">
+    <h2>📂 Upload je gezondheidsgegevens</h2>
+    <p>Upload een .csv of .json bestand met slaap, stappen, hartslag en stressniveau.</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv, .json" required>
+        <button type="submit">Uploaden</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - VitalView{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="contact-container">
+    <h1>Neem contact op</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('routes.contact') }}">
+      <div class="form-group">
+        <label for="naam">Naam *</label>
+        <input type="text" name="naam" id="naam" required>
+
+        <label for="emailadres">E-mailadres *</label>
+        <input type="email" name="emailadres" id="emailadres" required pattern="^[\w\.-]+@[\w\.-]+\.\w+$">
+
+        <label for="onderwerp">Onderwerp *</label>
+        <select name="onderwerp" id="onderwerp" required>
+          <option value="">-- Kies een onderwerp --</option>
+          <option>Vraag</option>
+          <option>Feedback</option>
+          <option>Technisch probleem</option>
+          <option>Anders</option>
+        </select>
+
+        <label for="telefoonnummer">Telefoonnummer (optioneel)</label>
+        <input type="tel" name="telefoonnummer" id="telefoonnummer"
+               pattern="^(\+|0)[0-9\s\-]{6,14}$"
+               placeholder="+32 478 00 00 00">
+
+        <label for="bericht">Bericht *</label>
+        <textarea name="bericht" id="bericht" required></textarea>
+
+        <button type="submit" class="btn-submit">Verzenden</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
